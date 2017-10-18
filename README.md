@@ -46,3 +46,6 @@
 - 從外部引入
 
 `<script type="text/jsx" src="main.jsx"></script>` 
+
+## Redux 狀態控制器
+Redux 有一個 store 用以儲存所有元件的狀態，經由元件發動的 action 觸發 Reducer 呼叫對映的方法來改變元件狀態，反回最新的狀態。
