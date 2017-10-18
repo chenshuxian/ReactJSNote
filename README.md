@@ -51,3 +51,45 @@
 Redux 有一個 store 用以儲存所有元件的狀態，經由元件發動的 action 觸發 Reducer 呼叫對映的方法來改變元件狀態，反回最新的狀態。
 
  Redux 資料流的模型大致上可以簡化成： `View -> Action -> (Middleware) -> Reducer`。
+ 
+ Reducer: 用來儲存所有 action 所對映的動作，範例如下:
+ 
+ ```javascript
+import { createStore } from 'redux';
+
+/** 
+  下面是一個簡單的 reducers ，主要功能是針對傳進來的 action type 判斷並回傳新的 state
+  reducer 規格：(state, action) => newState 
+  一般而言 state 可以是 primitive、array 或 object 甚至是 ImmutableJS Data。但要留意的是不能修改到原來的 state ，
+  回傳的是新的 state。由於使用在 Redux 中使用 ImmutableJS 有許多好處，所以我們的範例 App 也會使用 ImmutableJS 
+*/
+function counter(state = 0, action) {
+  switch (action.type) {
+  case 'INCREMENT':
+    return state + 1;
+  case 'DECREMENT':
+    return state - 1;
+  default:
+    return state;
+  }
+}
+
+// 創建 Redux store 去存放 App 的所有 state
+// store 的可用 API { subscribe, dispatch, getState } 
+let store = createStore(counter);
+
+// 可以使用 subscribe() 來訂閱 state 是否更新。但實務通常會使用 react-redux 來串連 React 和 Redux
+store.subscribe(() =>
+  console.log(store.getState());
+);
+
+// 若想改變 state ，一律發 action
+store.dispatch({ type: 'INCREMENT' });
+// 1
+store.dispatch({ type: 'INCREMENT' });
+// 2
+store.dispatch({ type: 'DECREMENT' });
+// 1
+```
+
+
